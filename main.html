@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Zajęć</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="logo1.jpg" alt="logo">
+      <div class="controls">
+        <button>Motyw</button>
+        <button>A -</button>
+        <button>A +</button>
+      </div>
+    </header>
+
+    <div class="filters">
+      <button class="dropdown" onclick="Filters()">wybierz filtry ▼</button>
+      <div class="filter-options">
+        <label>Wydział: <input type="text" placeholder="Wpisz wydział"></label>
+        <label>Typ studiów: <input type="text" placeholder="Wpisz typ studiów"></label>
+        <label>Semestr: <input type="text" placeholder="Wpisz semestr"></label>
+        <label>Wykładowca: <input type="text" placeholder="Wpisz wykładowcę"></label>
+        <label>Forma przedmiotu: <input type="text" placeholder="Wpisz formę przedmiotu"></label>
+        <label>Przedmiot: <input type="text" placeholder="Wpisz przedmiot"></label>
+        <label>Sala: <input type="text" placeholder="Wpisz salę"></label>
+        <label>Grupa: <input type="text" placeholder="Wpisz grupę"></label>
+        <label>Numer albumu: <input type="text" placeholder="Wpisz numer albumu"></label>
+      </div>
+    </div>
+
+    <div class="schedule-controls">
+      <div class="btn">
+        <button>Wyczyść filtry</button>
+        <button>Szukaj</button>
+      </div>   
+      <div class="date-controls">
+        <button>Dzień</button>
+        <button>Tydzień</button>
+        <button>Miesiąc</button>
+        <button>Semestr</button>
+        <button>Poprzedni</button>
+        <button>Następny</button>
+      </div>
+      <div class="today-date">Dzisiaj: data</div>
+    </div>
+
+    <table class="schedule">
+        <tr>
+          <th class="time-column"></th> 
+          <th>poniedziałek</th>
+          <th>wtorek</th>
+          <th>środa</th>
+          <th>czwartek</th>
+          <th>piątek</th>
+          <th>sobota</th>
+          <th>niedziela</th>
+        </tr>
+
+        <tr>
+          <td class="time-column">7</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">8</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">9</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">10</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">11</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">12</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">13</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">14</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">15</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">16</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">17</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">18</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">19</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="time-column">20</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+    </table>
+</div>    
+  <script src="script.js"></script>
+</body>
+</html>
