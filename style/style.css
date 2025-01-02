@@ -11,7 +11,7 @@
   }
   
   .container {
-    width: 95%;
+    width: 80%;
     margin: 20px auto;
     padding: 20px;
     border-radius: 10px;
@@ -102,13 +102,6 @@
 
   .schedule-controls button:hover{
     background: #3D6B51;
-  }
-  
-  .today-date {
-    background: #3D6B51;
-    color: white;
-    padding: 10px 10px;
-    border-radius: 5px;
   }
   
   .schedule {
