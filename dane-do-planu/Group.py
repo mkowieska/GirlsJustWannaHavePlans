@@ -38,7 +38,7 @@ def group_exists_in_database(connection, group_name):
         print(f"[ERROR] Database error while checking group existence: {err}")
         return False
     finally:
-        cursor.close()
+        cursor.close() #
 
 def insert_into_database(group_data, group_letter):
     try:
