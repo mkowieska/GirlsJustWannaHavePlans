@@ -3,7 +3,7 @@ import json
 import mysql.connector
 import string
 
-def fetch_group_data(group_number):
+def fetch_group_data(group_number): 
     url = f"https://plan.zut.edu.pl/schedule.php?kind=group&query={group_number}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
@@ -11,20 +11,15 @@ def fetch_group_data(group_number):
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        print(f"Error fetching data for group {group_number}: HTTP {response.status_code}")
+        print(f"❌ Błąd pobierania danych dla grupy {group_number}: HTTP {response.status_code}")
         return None
 
     try:
-        # Parse JSON data
         data = json.loads(response.text)
-        
-        # Filter and extract group names (skip 'false' entries)
         group_names = [item["item"] for item in data if isinstance(item, dict) and "item" in item]
-
-        # Assume capacity is unknown or fixed (default to 0)
-        return [(name, 0) for name in group_names]  # Returning a list of tuples
+        return [(name, 0) for name in group_names]  
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON for group {group_number}: {e}")
+        print(f"Błąd dekodowania JSON dla grupy {group_number}: {e}")
         return None
 
 def group_exists_in_database(connection, group_name):
@@ -38,7 +33,7 @@ def group_exists_in_database(connection, group_name):
         print(f"[ERROR] Database error while checking group existence: {err}")
         return False
     finally:
-        cursor.close() #
+        cursor.close() 
 
 def insert_into_database(group_data, group_letter):
     try:
@@ -60,9 +55,9 @@ def insert_into_database(group_data, group_letter):
                 cursor.execute(insert_query, (group_name,))
 
         connection.commit()
-        print(f"Inserted {cursor.rowcount} new groups into the database for letter {group_letter}.")
+        print(f"Wprowadzono {cursor.rowcount} nowe grupy do bazy danych dla litery {group_letter}.")
     except mysql.connector.Error as err:
-        print(f"Database error: {err}")
+        print(f"❌ Błąd bazy danych: {err}")
     finally:
         if connection.is_connected():
             cursor.close()
@@ -73,4 +68,4 @@ if __name__ == "__main__":
         group_data = fetch_group_data(group_number)
         if group_data:
             insert_into_database(group_data, group_number)
-    print("All groups have been successfully added! 🎉")
+    print("✅ Proces zakończony.")

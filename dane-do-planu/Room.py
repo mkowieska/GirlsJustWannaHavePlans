@@ -10,20 +10,15 @@ def fetch_room_data(room_number):
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        print(f"Error fetching data for room {room_number}: HTTP {response.status_code}")
+        print(f"❌ Błąd pobierania danych dla litery {room_number}: HTTP {response.status_code}")
         return None
 
     try:
-        # Parse JSON data
         data = json.loads(response.text)
-        
-        # Filter and extract room names (skip 'false' entries)
         room_names = [item["item"] for item in data if isinstance(item, dict) and "item" in item]
-
-        # Assume capacity is unknown or fixed (default to 0)
-        return [(name, 0) for name in room_names]  # Returning a list of tuples
+        return [(name, 0) for name in room_names]
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON for room {room_number}: {e}")
+        print(f"Błąd dekodowania JSON dla sali {room_number}: {e}")
         return None
 
 def room_exists_in_database(connection, room_name):
@@ -34,7 +29,7 @@ def room_exists_in_database(connection, room_name):
         result = cursor.fetchone()
         return result[0] > 0
     except mysql.connector.Error as err:
-        print(f"Database error while checking room existence: {err}")
+        print(f"❌ Błąd bazy danych podczas sprawdzania istnienia sali: {err}")
         return False
     finally:
         cursor.close()
@@ -59,9 +54,9 @@ def insert_into_database(room_data):
                 cursor.execute(insert_query, (room_name, capacity))
 
         connection.commit()
-        print(f"Inserted {cursor.rowcount} new rooms into the database.")
+        print(f"Wprowadzono {cursor.rowcount} nowe sale do bazy danych.")
     except mysql.connector.Error as err:
-        print(f"Database error: {err}")
+        print(f"❌ Błąd bazy danych: {err}")
     finally:
         if connection.is_connected():
             cursor.close()
