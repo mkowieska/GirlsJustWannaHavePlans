@@ -44,8 +44,8 @@ def insert_into_database(room_data):
         connection = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='B7uWyeGcjqRX3bv!',
-            database='lepszy_plan'
+            password='',
+            database='new_schema_proj_ai1'
         )
         cursor = connection.cursor()
 

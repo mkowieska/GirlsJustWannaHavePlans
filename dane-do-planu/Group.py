@@ -27,13 +27,26 @@ def fetch_group_data(group_number):
         print(f"Error decoding JSON for group {group_number}: {e}")
         return None
 
-def insert_into_database(group_data):
+def group_exists_in_database(connection, group_name):
+    try:
+        cursor = connection.cursor()
+        check_query = "SELECT COUNT(*) FROM `Group` WHERE name = %s"
+        cursor.execute(check_query, (group_name,))
+        result = cursor.fetchone()
+        return result[0] > 0
+    except mysql.connector.Error as err:
+        print(f"[ERROR] Database error while checking group existence: {err}")
+        return False
+    finally:
+        cursor.close()
+
+def insert_into_database(group_data, group_letter):
     try:
         connection = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='B7uWyeGcjqRX3bv!',
-            database='lepszy_plan'
+            password='',
+            database='new_schema_proj_ai1'
         )
         cursor = connection.cursor()
 
@@ -41,10 +54,13 @@ def insert_into_database(group_data):
         INSERT INTO `Group` (name)
         VALUES (%s)
         """
-        cursor.executemany(insert_query, [(name,) for name, _ in group_data])  # Use executemany to insert multiple rows
-        connection.commit()
 
-        print(f"Inserted {len(group_data)} groups into the database.")
+        for group_name, _ in group_data:
+            if not group_exists_in_database(connection, group_name):
+                cursor.execute(insert_query, (group_name,))
+
+        connection.commit()
+        print(f"Inserted {cursor.rowcount} new groups into the database for letter {group_letter}.")
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
     finally:
@@ -56,4 +72,5 @@ if __name__ == "__main__":
     for group_number in string.ascii_uppercase:
         group_data = fetch_group_data(group_number)
         if group_data:
-            insert_into_database(group_data)
+            insert_into_database(group_data, group_number)
+    print("All groups have been successfully added! 🎉")
