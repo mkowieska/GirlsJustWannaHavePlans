@@ -2,7 +2,7 @@ import requests
 import json
 import mysql.connector
 import string
-
+ 
 def fetch_group_data(group_number):
     url = f"https://plan.zut.edu.pl/schedule.php?kind=group&query={group_number}"
     headers = {
@@ -11,7 +11,7 @@ def fetch_group_data(group_number):
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        print(f"Error fetching data for group {group_number}: HTTP {response.status_code}")
+        print(f"❌Error fetching data for group {group_number}: HTTP {response.status_code}")
         return None
 
     try:
@@ -27,8 +27,8 @@ def insert_into_database(group_data):
         connection = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='B7uWyeGcjqRX3bv!',
-            database='lepszy_plan'
+            password='',
+            database='new_schema_proj_ai1'
         )
         cursor = connection.cursor()
 
@@ -41,7 +41,7 @@ def insert_into_database(group_data):
 
         print(f"Inserted {len(group_data)} groups into the database.")
     except mysql.connector.Error as err:
-        print(f"Database error: {err}")
+        print(f"❌ Database error: {err}")
     finally:
         if connection.is_connected():
             cursor.close()

@@ -1,6 +1,8 @@
 import requests
 import json
 import mysql.connector
+import string 
+from datetime import datetime, timedelta
 
 def fetch_schedule_data(teacher_name, start_date, end_date):
     url = f"https://plan.zut.edu.pl/schedule_student.php?teacher={teacher_name}&start={start_date}&end={end_date}"
@@ -111,12 +113,36 @@ def main():
     teacher_name = "Karczmarczyk Aleksandra"
     start_date = "2024-09-30T00:00:00+02:00"
     end_date = "2024-10-07T00:00:00+02:00"
+    #start_date = datetime.now()
+    #end_date = start_date + timedelta(days=250)
+
+    # for teacher_name in string.ascii_uppercase:
+    #     current_date = start_date
+    #     while current_date <= end_date:
+    #         start = current_date.strftime("%Y-%m-%dT00:00:00+02:00")
+    #         end = (current_date + timedelta(days=1)).strftime("%Y-%m-%dT00:00:00+02:00")
+    #         print(f"📅 Pobieranie danych dla nauczyciela: {teacher_name}, Data: {start} - {end}")
+    #         raw_data = fetch_schedule_data(teacher_name, start, end)
+    #         if raw_data:
+    #             processed_data = process_data(raw_data)
+    #             insert_into_database(processed_data)
+    #         current_date += timedelta(days=1)
+
+    # for letter in string.ascii_uppercase:
+    #     teacher_name = f"{letter} nauczyciel"
+    #     print(f"🔄 Pobieranie danych dla nauczyciela: {teacher_name}...")
+    #     raw_data = fetch_schedule_data(teacher_name, start_date, end_date)
+    #     if raw_data:
+    #         print("🛠️ Przetwarzanie danych...")
+    #         processed_data = process_data(raw_data)
+    #         print("💾 Zapisywanie danych do bazy...")
+    #         insert_into_database(processed_data)
 
     print("🔄 Pobieranie danych z API...")
     raw_data = fetch_schedule_data(teacher_name, start_date, end_date)
     if not raw_data:
         print("❌ Brak danych do zapisania.")
-        return
+        return 
 
     print("🛠️ Przetwarzanie danych...")
     processed_data = process_data(raw_data)
