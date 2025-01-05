@@ -59,7 +59,7 @@
     text-align: left;
     width: 100%;
   }
-  
+
   .filter-options {
     display: none;
     background: #007db736;
@@ -130,6 +130,64 @@
     background: #48cae4;
     font-weight: bold;
   }
+
+  .dropdown2 {
+    float: left;
+  }
+
+  .motywy {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    margin-top: 2%;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+}
+
+.default {
+    border: solid !important;
+    background-color: white !important;
+    color: black !important;
+}
+
+
+.white-black {
+    background-color: black !important;
+    color: white !important;
+}
+
+.yellow-black {
+    color: yellow !important;
+    background-color: black !important;
+}
+
+.black-yellow {
+    color: black !important;
+    background-color: yellow !important;
+}
+
+body.default {
+    border: none !important;
+    background-color: white;
+    color: black;
+}
+
+body.white-black {
+    background-color: black;
+    color: white;
+}
+
+body.yellow-black {
+    background-color: black;
+    color: yellow;
+}
+
+body.black-yellow {
+    background-color: yellow;
+    color: black;
+}
 
   @media (max-width: 768px) {
     .container{
