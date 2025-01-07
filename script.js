@@ -1,10 +1,10 @@
 // Funkcje związane z filtrowaniem
-function Filters() {
+function Choosefilters() {
     const filterOptions = document.querySelector('.filter-options');
     filterOptions.style.display = filterOptions.style.display === 'block' ? 'none' : 'block';
 }
 
-function Filters2() {
+function Motywfilters() {
     const filterOptions = document.querySelector('.motywy');
     filterOptions.style.display = filterOptions.style.display === 'block' ? 'none' : 'block';
 }
@@ -42,7 +42,10 @@ document.getElementById('search').addEventListener('click', function() {
 
 document.getElementById('clear-filters').addEventListener('click', function() {
     ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu']
-        .forEach(id => document.getElementById(id).value = '');
+        // .forEach(id => document.getElementById(id).value = '');
+        for (const id of ids) {
+            document.getElementById(id).value = '';
+        }
 });
 
 // Inicjalizacja i przyciski nawigacyjne
