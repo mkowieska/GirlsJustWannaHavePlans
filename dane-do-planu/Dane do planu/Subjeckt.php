@@ -59,12 +59,12 @@ function fetchSubjectDataByQuery($query) {
 
 function ensureUniqueIndexOnSubject() {
     try {
-        // MySQL connection
-        $pdo = new PDO('mysql:host=localhost;dbname=lepszy_plan', 'root', 'B7uWyeGcjqRX3bv!');
+        // SQLite connection
+        $pdo = new PDO('sqlite:/path/to/database.db');  // Ensure the path to your SQLite database is correct
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        // Remove 'IF NOT EXISTS' as it is not supported in older versions of MySQL
-        $query = "CREATE UNIQUE INDEX idx_subject_name ON Subject(name)";
+
+        // Create unique index on 'name' column to avoid duplicates
+        $query = "CREATE UNIQUE INDEX IF NOT EXISTS idx_subject_name ON Subject(name)";
         $pdo->exec($query);
         echo "Added UNIQUE index on 'name' column in 'Subject' table.\n";
     } catch (PDOException $e) {
@@ -76,18 +76,18 @@ function insertSubjectsIntoDatabase($subjectData) {
     echo "Inserting " . count($subjectData) . " subjects into the database...\n";
 
     try {
-        // MySQL connection
-        $pdo = new PDO('mysql:host=localhost;dbname=lepszy_plan', 'root', 'B7uWyeGcjqRX3bv!');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // SQLite connection
+        $db = new PDO('sqlite:database.db'); // Ensure the path to your SQLite database is correct
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $query = "INSERT IGNORE INTO Subject (name) VALUES (:name)";
-        $stmt = $pdo->prepare($query);
+        $query = "INSERT INTO Subject (name) VALUES (:name)";
+        $stmt = $db->prepare($query);
 
         foreach ($subjectData as $subjectName) {
             $stmt->execute([':name' => $subjectName]);
         }
 
-        echo "Inserted subjects into the database, duplicates ignored.\n";
+        echo "Inserted subjects into the database.\n";
     } catch (PDOException $e) {
         echo "Database error: " . $e->getMessage() . "\n";
     }

@@ -5,7 +5,7 @@ try {
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
-} 
+}
 
 // API Fetch Function
 function fetch_student_schedule($albumNumber) {
@@ -18,8 +18,6 @@ function fetch_student_schedule($albumNumber) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    // Disable SSL verification (be cautious with this)
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
     $response = curl_exec($ch);
@@ -53,11 +51,20 @@ function get_id_from_table($connection, $table, $column, $value) {
 }
 
 function insert_lesson($connection, $lessonData) {
-    $query = "INSERT INTO Lesson (subject_id, group_id, room_id, student_id, lesson_date, start_time, end_time, class_type, responsible_lecturer_id, substitute_lecturer_id) 
-              VALUES (:subject_id, :group_id, :room_id, :student_id, :lesson_date, :start_time, :end_time, :class_type, :responsible_lecturer_id, NULL)";
-    $stmt = $connection->prepare($query);
-    $stmt->execute($lessonData);
+    try {
+        echo "Inserting lesson data: ";
+        print_r($lessonData); // Check the data being inserted
+        
+        $query = "INSERT INTO Lesson (subject_id, group_id, room_id, student_id, lesson_date, start_time, end_time, class_type, responsible_lecturer_id, substitute_lecturer_id) 
+                  VALUES (:subject_id, :group_id, :room_id, :student_id, :lesson_date, :start_time, :end_time, :class_type, :responsible_lecturer_id, NULL)";
+        $stmt = $connection->prepare($query);
+        $stmt->execute($lessonData);
+    } catch (PDOException $e) {
+        echo "Error inserting lesson: " . $e->getMessage() . "\n";
+        print_r($lessonData);
+    }
 }
+
 
 function process_album_number($albumNumber) {
     global $connection;
@@ -78,6 +85,7 @@ function process_album_number($albumNumber) {
         foreach ($data as $key => $lesson) {
             if ($key === 0) continue; // Skip the first element if it's metadata.
 
+            // Extract lesson details
             $subjectId = get_id_from_table($connection, 'Subject', 'name', $lesson['subject']);
             $groupId = get_id_from_table($connection, '`Group`', 'group_name', $lesson['group_name']);
             $roomId = get_id_from_table($connection, 'Room', 'name', $lesson['room']);
@@ -89,6 +97,8 @@ function process_album_number($albumNumber) {
 
             if (!$subjectId || !$groupId || !$roomId || !$lecturerId) {
                 echo "Missing data for lesson: " . $lesson['title'] . "\n";
+                echo "subjectId: $subjectId, groupId: $groupId, roomId: $roomId, lecturerId: $lecturerId\n";
+                print_r($lesson);
                 continue;
             }
 
