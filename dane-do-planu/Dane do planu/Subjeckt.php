@@ -93,11 +93,12 @@ function insertSubjectsIntoDatabase($subjectData) {
 // Main Script
 ensureUniqueIndexOnSubject();
 
-$alphabet = range('A', 'Z');
+#$alphabet = range('A', 'Z');
+$alphabet_number = array_merge(range('A', 'Z'), range('0', '9'));
 echo "Starting to fetch data for all subjects A-Z...\n";
 
-foreach ($alphabet as $letter) {
-    $query = $letter;
+foreach ($alphabet_number as $letter_number) {
+    $query = $letter_number;
     $subjectData = fetchSubjectDataByQuery($query);
     if (!empty($subjectData)) {
         insertSubjectsIntoDatabase($subjectData);

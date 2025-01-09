@@ -1,7 +1,3 @@
-subject wyswietla >90tys wyszukiwan czy poprawic
-gdy jest Execute 'L', to sa inne litery
-dodac zeby po liczbie na poczatku tez lapalo
-
 Lesson zeby pobieralo id z innych klas poprawic!
 
 recznie dla dziewczyn od wyszukiwania
