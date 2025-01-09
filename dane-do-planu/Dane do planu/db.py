@@ -45,6 +45,27 @@ def create_database():
             )
         ''')
 
+        # cursor.execute('''
+        #     CREATE TABLE IF NOT EXISTS Lesson (
+        #         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        #         subject_id INTEGER NOT NULL,
+        #         group_id INTEGER NOT NULL,
+        #         room_id INTEGER NOT NULL,
+        #         student_id INTEGER NOT NULL,
+        #         lesson_date DATE NOT NULL,
+        #         start_time TIME NOT NULL,
+        #         end_time TIME NOT NULL,
+        #         class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'Projekt', 'Egzamin', 'Odwołane')),
+        #         responsible_lecturer_id INTEGER NOT NULL,
+        #         substitute_lecturer_id INTEGER,
+        #         FOREIGN KEY(subject_id) REFERENCES Subject(id),
+        #         FOREIGN KEY(group_id) REFERENCES `Group`(id),
+        #         FOREIGN KEY(room_id) REFERENCES Room(id),
+        #         FOREIGN KEY(student_id) REFERENCES Student(id),
+        #         FOREIGN KEY(responsible_lecturer_id) REFERENCES Lecturer(id),
+        #         FOREIGN KEY(substitute_lecturer_id) REFERENCES Lecturer(id)
+        #     )
+        # ''')
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Lesson (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,7 +76,7 @@ def create_database():
                 lesson_date DATE NOT NULL,
                 start_time TIME NOT NULL,
                 end_time TIME NOT NULL,
-                class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'Projekt', 'Egzamin', 'Odwołane')),
+                class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'Projekt', 'Egzamin', 'Lek','Odwołane')),
                 responsible_lecturer_id INTEGER NOT NULL,
                 substitute_lecturer_id INTEGER,
                 FOREIGN KEY(subject_id) REFERENCES Subject(id),
@@ -66,7 +87,7 @@ def create_database():
                 FOREIGN KEY(substitute_lecturer_id) REFERENCES Lecturer(id)
             )
         ''')
-
+        
         # Commit changes
         connection.commit()
         print("Tables created successfully.")
