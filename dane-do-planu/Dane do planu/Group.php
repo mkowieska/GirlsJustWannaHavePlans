@@ -6,11 +6,11 @@ function fetchGroupData($groupNumber) {
     $options = [
         "http" => [
             "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\r\n",
-            "ignore_errors" => true // zapewnia to, że zawartość zostanie zwrócona nawet jeśli kod HTTP nie jest 200
+            "ignore_errors" => true // zapewnia to, że zawartość zostanie zwrócona nawet jesli kod HTTP nie jest 200
         ],
         "ssl" => [
-            "verify_peer" => false, // wyłączona weryfikacja SSL 
-            "verify_peer_name" => false, // wyłączona weryfikacja nazwy równorzędnej
+            "verify_peer" => false, // wylaczona weryfikacja SSL 
+            "verify_peer_name" => false, // wylaczona weryfikacja nazwy równorzędnej
         ]
     ];
 
