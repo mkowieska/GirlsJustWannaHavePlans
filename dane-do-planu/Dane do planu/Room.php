@@ -57,7 +57,7 @@ function insert_into_database($room_data) {
                 $added_count++;
             }
         }
-
+        echo "Inserted " . count($room_data) . " rooms into the database.\n";
         return $added_count;
     } catch (PDOException $e) {
         echo "[ERROR] Database error: " . $e->getMessage() . "\n";

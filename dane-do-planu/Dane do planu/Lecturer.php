@@ -6,11 +6,11 @@ function fetchLecturerDataByLetter($letter) {
     $options = [
         "http" => [
             "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\r\n",
-            "ignore_errors" => true // Ensure content is returned even if HTTP code is not 200
+            "ignore_errors" => true 
         ],
         "ssl" => [
-            "verify_peer" => false, // Disable SSL verification
-            "verify_peer_name" => false, // Disable peer name verification
+            "verify_peer" => false, 
+            "verify_peer_name" => false, 
         ]
     ];
 
@@ -18,14 +18,14 @@ function fetchLecturerDataByLetter($letter) {
     $response = file_get_contents($url, false, $context);
 
     if ($response === false) {
-        echo "Error fetching data for letter '{$letter}'\n";
+        echo "[ERROR] Fetching data for letter $letter\n";
         return null;
     }
 
     $data = json_decode($response, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
-        echo "Error decoding JSON for letter '{$letter}': " . json_last_error_msg() . "\n";
+        echo "[ERROR] Decoding JSON for letter $letter: " . json_last_error_msg() . "\n";
         return null;
     }
 
@@ -36,7 +36,7 @@ function fetchLecturerDataByLetter($letter) {
             $nameParts = explode(' ', $fullName);
             if (count($nameParts) >= 2) {
                 $firstName = $nameParts[0];
-                $lastName = implode(' ', array_slice($nameParts, 1)); // Handle multi-part last names
+                $lastName = implode(' ', array_slice($nameParts, 1)); // obsługa nazwisk składających się z wielu części
                 $lecturers[] = [$firstName, $lastName];
             }
         }
@@ -50,7 +50,6 @@ function insertIntoDatabase($lecturerData) {
         $pdo = new PDO('sqlite:database.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Assuming SQLite, using INSERT OR IGNORE
         $insertQuery = "INSERT OR IGNORE INTO Lecturer (first_name, last_name) VALUES (:first_name, :last_name)";
         $stmt = $pdo->prepare($insertQuery);
 
@@ -61,7 +60,7 @@ function insertIntoDatabase($lecturerData) {
             ]);
         }
 
-        echo "Inserted " . count($lecturerData) . " lecturers into the database (ignoring duplicates).\n";
+        echo "Inserted " . count($lecturerData) . " lecturers into the database.\n"; #ignoring duplicates
     } catch (PDOException $e) {
         echo "[ERROR] Database error: " . $e->getMessage() . "\n";
     }

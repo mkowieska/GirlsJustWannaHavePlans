@@ -6,11 +6,11 @@ function fetchGroupData($groupNumber) {
     $options = [
         "http" => [
             "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\r\n",
-            "ignore_errors" => true // this ensures the content is returned even if HTTP code is not 200
+            "ignore_errors" => true // zapewnia to, że zawartość zostanie zwrócona nawet jeśli kod HTTP nie jest 200
         ],
         "ssl" => [
-            "verify_peer" => false, // Disable SSL verification
-            "verify_peer_name" => false, // Disable peer name verification
+            "verify_peer" => false, // wyłączona weryfikacja SSL 
+            "verify_peer_name" => false, // wyłączona weryfikacja nazwy równorzędnej
         ]
     ];
 
@@ -18,14 +18,14 @@ function fetchGroupData($groupNumber) {
     $response = file_get_contents($url, false, $context);
 
     if ($response === false) {
-        echo "Error fetching data for group $groupNumber\n";
+        echo "[ERROR] Fetching data for group $groupNumber\n";
         return null;
     }
 
     $data = json_decode($response, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
-        echo "Error decoding JSON for group $groupNumber: " . json_last_error_msg() . "\n";
+        echo "[ERROR] Decoding JSON for group $groupNumber: " . json_last_error_msg() . "\n";
         return null;
     }
 
@@ -40,12 +40,11 @@ function fetchGroupData($groupNumber) {
     return $groupNames;
 }
 
-function insertIntoDatabase($groupData) {
+function insertIntoDatabase($groupData) { 
     try {
         $pdo = new PDO('sqlite:database.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Assuming you want to use SQLite, leave it as INSERT OR IGNORE
         $insertQuery = "INSERT OR IGNORE INTO `Group` (group_name) VALUES (:group_name)";
         $stmt = $pdo->prepare($insertQuery);
 
@@ -55,7 +54,7 @@ function insertIntoDatabase($groupData) {
 
         echo "Inserted " . count($groupData) . " groups into the database.\n";
     } catch (PDOException $e) {
-        echo "Database error: " . $e->getMessage() . "\n";
+        echo "[ERROR] Database error: " . $e->getMessage() . "\n";
     }
 }
 

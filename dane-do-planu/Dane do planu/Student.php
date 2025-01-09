@@ -57,12 +57,19 @@ function insert_student($album_number) {
         $query->execute([':album_number' => $album_number]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
+        $added_count = 0;
+    
         if (!$result) {
             $insert_query = $db->prepare("INSERT INTO `Student` (album_number) VALUES (:album_number)");
             $insert_query->execute([':album_number' => $album_number]);
+            if ($insert_query->rowCount() > 0) { 
+                $added_count++;
+            }
         }
+        echo "Inserted " . $added_count . " student into the database.\n"; // 1 wstawia, 0 nie wstawia
     } catch (PDOException $e) {
         // W przypadku błędu bazy danych można dodać logowanie, jeśli jest potrzebne
+        echo "[ERROR] Database error: " . $e->getMessage() . "\n";
     }
 }
 
