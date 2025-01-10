@@ -1,0 +1,44 @@
+Przykład:
+1 tyg.
+ przedmiot, grupa,  sala,     student,         data,   poczatek,     koniec, typ,      wykladowca,  zastepujacy wykladowca
+      (  1,     1,     1,           1, '2025-01-07', '12:15:00', '14:00:00', 'L',               1,  NULL)
+wt=pon 
+    ->Sztuczna inteligencja 1,S1_I_L_337 1,WI WI1- WI WI1- 013 1,53882 1,          ...,        ...,        ..., ..., Andrii Shekhovtsov 1, NULL
+    ->Aplikacje internetowe 2,S1_I_L_337 1,WI WI1- 303 2,53882 1,...,Aleksandra Karczmarczyk 2,NULL
+    ->Sieci komputerowe 3,S1_I_5 sem._W 2,WI WI1- 215 3,53882 1,...,Grzegorz Śliwiński 3,NULL
+sr 
+    ->Algorytmy 7,S1_I_22_W 6,WI WI2- 227 9,53882 1,...,Przemysław Klęsk 8,NULL
+    ->Wychowanie fizyczne 8,GA/I M2 7,SWFiS_HS_Sektor I 10,53882 1,...,Agata Grenda 9,NULL
+czw
+    ->Metody numeryczne 9,S1_I_22_W 6,WI WI1- 215 3,53882 1,...,Anna Barcz 10,NULL
+    ->Zarządzanie informacją 5,S1_I_W_33 4,WI WI1- 013 6,53882 1,...,Przemysław Korytkowski 5,NULL
+    ->Język angielski 4,SJO/WI/s.5/Wojsiat/l 3,WI WI2- 17,53882 1,...,Emilia Wojsiat 4,NULL
+    ->Inżynierski projekt zespołowy 10,S1_I_Ipz1_327 8,W2-318,53882 1,...,Anna Lewandowska 11,NULL
+pt
+    ->Podstawy ochrony informacji 6,S1_I_5 sem._W 2,WI WI2- 126 13,53882 1,...,Jerzy Pejaś 12,NULL
+    ->Sztuczna inteligencja 1,S1_I_5 sem._W 2,WI WI2- 227 9,53882 1,...,Przemysław Klęsk 8,NULL
+    ->Grafika webowa,PO8_Gw_L_gr.1,WI WI1- 013 6,53882 1,...,Agnieszka Olejnik-Krugły 13,NULL
+    ->Grafika webowa,PO8_Gw_L_gr.1,WI WI1- WI WI1- 013 1,53882 1,...,Agnieszka Olejnik-Krugły 13,NULL
+
+2tyg.
+pon 
+    ->Sztuczna inteligencja 1,S1_I_L_337 1,WI WI1- 013 1,53882 1,...,Andrii Shekhovtsov 1,NULL
+    ->Aplikacje internetowe 2,S1_I_L_337 1,WI WI1- 303 2,53882 1,...,Aleksandra Karczmarczyk 2,NULL
+    ->Sieci komputerowe 3,S1_I_5 sem._W 2,WI WI1- 215 3,53882 1,...,Grzegorz Śliwiński 3,NULL
+wt 
+    ->Język angielski 4,SJO/WI/s.5/Wojsiat/l 3,WI WI2- 17 4,53882 1,...,Emilia Wojsiat 4,NULL
+    ->Zarządzanie informacją 5,S1_I_W_33 4,WI WI1- 309 5,53882 1,...,Przemysław Korytkowski 5,Andrii Shekhovtsov 1
+    ->Aplikacje internetowe 2,S1_I_W_33 4,WI WI1- 013 6,53882 1,...,Artur Karczmarczyk 6,NULL
+    ->Sieci komputerowe 3,S1_I_L_337 1,WI WI1- 215 3,53882 1,...,Grzegorz Śliwiński 3,NULL
+    ->Podstawy ochrony informacji 6,S1_I_L_332 5,WI WI2- 126 13,53882 1,...,Imed El Fray 7,NULL
+sr 
+    ->Algorytmy 7,S1_I_22_W 6,WI WI2- 227 9,53882 1,...,Przemysław Klęsk 8,NULL
+    ->Wychowanie fizyczne 8,GA/I M2 7,SWFiS_HS_Sektor I 10 10,53882 1,...,Agata Grenda 9,NULL
+czw
+    ->Metody numeryczne 9,S1_I_22_W 6,WI WI1- 215 3,53882 1,...,Anna Barcz 10,NULL
+    ->Zarządzanie informacją 5,S1_I_W_33 4,WI WI1- 013 6,53882 1,...,Przemysław Korytkowski 5,NULL
+    ->Język angielski 4,SJO/WI/s.5/Wojsiat/l 3,WI WI2- 17 4,53882 1,...,Emilia Wojsiat 4,NULL
+    ->Inżynierski projekt zespołowy 10,S1_I_Ipz1_327 8,W2-318 12,53882 1,...,Anna Lewandowska 11,NULL
+pt
+    ->Podstawy ochrony informacji 6,S1_I_5 sem._W 2,WI WI2- 126 13,53882 1,...,Jerzy Pejaś 12,NULL
+    ->Sztuczna inteligencja 1,S1_I_5 sem._W 2,WI WI2- 227 9,53882 1,...,Przemysław Klęsk 8,NULL

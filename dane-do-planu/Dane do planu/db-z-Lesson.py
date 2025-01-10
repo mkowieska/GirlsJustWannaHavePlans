@@ -5,8 +5,64 @@ def add_to_database():
         connection = sqlite3.connect('database.db')
         cursor = connection.cursor()
         print("Connected to the database.")
-        #!!!!!!!
-        # dane na sztywno do Lesson, by zrobic filtrowanie
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Lecturer (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                first_name VARCHAR(100) NOT NULL,
+                last_name VARCHAR(100) NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Subject (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(100) NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Room (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(100) NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS `Group` (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                group_name VARCHAR(100) UNIQUE NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Student (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                album_number INTEGER UNIQUE NOT NULL
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Lesson (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                subject_id INTEGER NOT NULL,
+                group_id INTEGER NOT NULL,
+                room_id INTEGER NOT NULL,
+                student_id INTEGER NOT NULL,
+                lesson_date DATE NOT NULL,
+                start_time TIME NOT NULL,
+                end_time TIME NOT NULL,
+                class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'P', 'e', 'Lek','o','Ez','Zz','kons')),
+                responsible_lecturer_id INTEGER NOT NULL,
+                substitute_lecturer_id INTEGER,
+                FOREIGN KEY(subject_id) REFERENCES Subject(id),
+                FOREIGN KEY(group_id) REFERENCES `Group`(id),
+                FOREIGN KEY(room_id) REFERENCES Room(id),
+                FOREIGN KEY(student_id) REFERENCES Student(id),
+                FOREIGN KEY(responsible_lecturer_id) REFERENCES Lecturer(id),
+                FOREIGN KEY(substitute_lecturer_id) REFERENCES Lecturer(id)
+            )
+        ''')
+
         cursor.execute('''
             INSERT INTO Lesson (
             subject_id, 
@@ -50,14 +106,15 @@ def add_to_database():
             (6, 2, 13, 1, '2025-01-17', '08:15:00', '10:00:00', 'W', 12, NULL), 
             (1, 2, 9, 1, '2025-01-17', '10:15:00', '12:00:00', 'W', 8, NULL)
         ''')
-        # na stronie planu zutu jest np. Algorytmy 2, ktore sa traktowane jako przedmiot polaczony z labami i wykladem, "Algorytmy 2 (WI, informatyka, SN, SPS)"
-        # dlatego np. w przykladzie mojego planu Sieci sa jako numer 3 obojetnie czy to sa L czy W, bo to jest jeden przedmiot
+        
         connection.commit()
-        print("Added to the table successfully.")
-    except sqlite3.Error as e:
-        print(f"SQLite error: {e}") 
+        print("Data inserted successfully.")
+        
+    except sqlite3.Error as error:
+        print("Failed to insert data into sqlite table", error)
     finally:
-        connection.close()
-        print("Database connection closed.")
+        if connection:
+            connection.close()
+            print("The SQLite connection is closed.")
 
 add_to_database()

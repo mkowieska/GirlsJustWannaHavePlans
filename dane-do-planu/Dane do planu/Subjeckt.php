@@ -94,10 +94,12 @@ function insertSubjectsIntoDatabase($subjectData) {
 ensureUniqueIndexOnSubject();
 
 #$alphabet = range('A', 'Z');
-$alphabet_number = array_merge(range('A', 'Z'), range('0', '9'));
+#$alphabet_number = array_merge(range('A', 'Z'), range('0', '9'));
+$alphabet_etc = array_merge(range('A', 'Z'), range('0', '9'), [' ','(', '[', '{', '!'], ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']); 
+#znaki specjalne dla sali " (WBiIS, budownictwo, SN, SPS)", zaczynajacej sie tak naprawde od spacji oraz cyrylica, poniewaz w poprzednim kodzie, ktory dublkowal wszytskie informacje zawarte w Przedmiot byly pliki z cyrylica
 echo "Starting to fetch data for all subjects A-Z...\n";
 
-foreach ($alphabet_number as $letter_number) {
+foreach ($alphabet_etc as $letter_number) {
     $query = $letter_number;
     $subjectData = fetchSubjectDataByQuery($query);
     if (!empty($subjectData)) {

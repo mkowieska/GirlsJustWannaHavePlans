@@ -1,5 +1,1 @@
 Lesson zeby pobieralo id z innych klas poprawic!
-
-recznie dla dziewczyn od wyszukiwania
-#dodac nastepny tyg
-#dac kom ze skrotami co sa po prawej, skopiowac je i tu wkleic

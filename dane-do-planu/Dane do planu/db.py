@@ -76,7 +76,7 @@ def create_database():
                 lesson_date DATE NOT NULL,
                 start_time TIME NOT NULL,
                 end_time TIME NOT NULL,
-                class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'Projekt', 'Egzamin', 'Lek','Odwołane')),
+                class_type VARCHAR(20) CHECK(class_type IN ('L', 'A', 'W', 'P', 'e', 'Lek','o','Ez','Zz','kons')),
                 responsible_lecturer_id INTEGER NOT NULL,
                 substitute_lecturer_id INTEGER,
                 FOREIGN KEY(subject_id) REFERENCES Subject(id),
