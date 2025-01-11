@@ -196,3 +196,75 @@ function getDaysOfWeek(startOfWeek) {
         return date.toLocaleDateString('pl-PL', { weekday: 'long' });
     });
 }
+
+//obsługa filtrów
+
+function fetchRoomScheduleWithFilters(roomNumber) {
+    const filters = ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu'];
+    const params = new URLSearchParams();
+    
+    params.append('room', roomNumber);
+
+    filters.forEach(id => {
+        const value = document.getElementById(id).value.trim();
+        if (value) {
+            params.append(id, value);
+        }
+    });
+
+    const url = `https://plan.zut.edu.pl/schedule.php?kind=room&query=${params.toString()}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Błąd podczas pobierania danych: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayRoomSchedule(data);
+        })
+        .catch(error => {
+            console.error("Błąd: ", error);
+            alert("Wystąpił błąd podczas pobierania danych dla sali.");
+        });
+}
+
+//wyświetlanie sali
+function displayRoomSchedule(data) {
+    const calendarTable = document.getElementById('calendar-table');
+    calendarTable.innerHTML = ""; 
+
+    if (data.length === 0) {
+        calendarTable.innerHTML = "<p>Brak danych dla podanej sali.</p>";
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.innerHTML = `
+        <tr>
+            <th>Data</th>
+            <th>Godzina rozpoczęcia</th>
+            <th>Godzina zakończenia</th>
+            <th>Przedmiot</th>
+            <th>Wykładowca</th>
+            <th>Grupa</th>
+        </tr>
+    `;
+
+    data.forEach(lesson => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${lesson.date}</td>
+            <td>${lesson.start_time}</td>
+            <td>${lesson.end_time}</td>
+            <td>${lesson.subject}</td>
+            <td>${lesson.lecturer}</td>
+            <td>${lesson.group}</td>
+        `;
+        table.appendChild(row);
+    });
+
+    calendarTable.appendChild(table);
+}
+

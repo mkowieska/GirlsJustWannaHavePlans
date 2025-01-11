@@ -32,12 +32,14 @@ document.getElementById('plus').addEventListener('click', () => {
 
 // Obsługa przycisków filtrowania
 document.getElementById('search').addEventListener('click', function() {
+    const roomInput = document.getElementById('sala').value.trim();
     const filters = ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu'];
     console.log("Filtry:");
     filters.forEach(id => {
         const value = document.getElementById(id).value;
         console.log(id, ":", value);
     });
+    fetchRoomScheduleWithFilters(roomInput);
 });
 
 document.getElementById('clear-filters').addEventListener('click', function() {
