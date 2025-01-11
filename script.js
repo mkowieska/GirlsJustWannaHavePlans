@@ -39,7 +39,9 @@ document.getElementById('search').addEventListener('click', function() {
         const value = document.getElementById(id).value;
         console.log(id, ":", value);
     });
-    fetchRoomScheduleWithFilters(roomInput);
+
+    // Wywołanie funkcji do pobrania danych z bazy
+    fetchRoomScheduleFromDatabase(roomInput);
 });
 
 document.getElementById('clear-filters').addEventListener('click', function() {

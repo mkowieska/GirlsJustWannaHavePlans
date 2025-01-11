@@ -199,38 +199,31 @@ function getDaysOfWeek(startOfWeek) {
 
 //obsługa filtrów
 
-function fetchRoomScheduleWithFilters(roomNumber) {
-    const filters = ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu'];
-    const params = new URLSearchParams();
-    
-    params.append('room', roomNumber);
-
-    filters.forEach(id => {
-        const value = document.getElementById(id).value.trim();
-        if (value) {
-            params.append(id, value);
+//sala:
+// Funkcja do pobierania danych z bazy SQLite
+function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
+    // Wywołanie backendu (np. endpointu, który obsłuży zapytanie do SQLite)
+    fetch('/get-room-schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room: roomNumber, filters: filterValues })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Błąd podczas pobierania danych: ${response.statusText}`);
         }
+        return response.json();
+    })
+    .then(data => {
+        displayRoomSchedule(data);
+    })
+    .catch(error => {
+        console.error("Błąd: ", error);
+        alert("Wystąpił błąd podczas pobierania danych dla sali.");
     });
-
-    const url = `https://plan.zut.edu.pl/schedule.php?kind=room&query=${params.toString()}`;
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Błąd podczas pobierania danych: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayRoomSchedule(data);
-        })
-        .catch(error => {
-            console.error("Błąd: ", error);
-            alert("Wystąpił błąd podczas pobierania danych dla sali.");
-        });
 }
 
-//wyświetlanie sali
+// Funkcja do wyświetlania danych w tabeli
 function displayRoomSchedule(data) {
     const calendarTable = document.getElementById('calendar-table');
     calendarTable.innerHTML = ""; 
@@ -255,7 +248,7 @@ function displayRoomSchedule(data) {
     data.forEach(lesson => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${lesson.date}</td>
+            <td>${lesson.lesson_date}</td>
             <td>${lesson.start_time}</td>
             <td>${lesson.end_time}</td>
             <td>${lesson.subject}</td>
@@ -267,4 +260,5 @@ function displayRoomSchedule(data) {
 
     calendarTable.appendChild(table);
 }
+
 
