@@ -20,6 +20,26 @@ function checkRoomExistence($db, $roomNumber) {
     }
 }
 
+// Funkcja do sprawdzania, czy wykładowca istnieje w bazie danych
+function checkLecturerExistence($db, $lecturerName) {
+    try {
+        $stmt = $db->prepare("
+            SELECT id 
+            FROM Lecturer 
+            WHERE first_name || ' ' || last_name LIKE :lecturerName
+        ");
+        $stmt->bindParam(':lecturerName', $lecturerName, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['id'] : null;
+    } catch (PDOException $e) {
+        error_log("SQLite error: " . $e->getMessage());
+        return null;
+    }
+}
+
+
 // Funkcja do pobierania harmonogramu dla sali
 function getRoomSchedule($roomNumber, $filters) {
     try {

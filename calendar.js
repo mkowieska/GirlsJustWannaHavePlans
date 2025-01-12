@@ -199,12 +199,32 @@ function getDaysOfWeek(startOfWeek) {
 
 //obsługa filtrów
 
-//sala:
-//Funkcja do pobierania danych z bazy SQLite
 function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
-    // Wywołanie backendu (np. endpointu, który obsłuży zapytanie do SQLite)
-    // fetch('/get-room-schedule', {
-    fetch('http://127.0.0.1:5000/sala.php', {
+    // Pobranie wartości z pola wykładowcy
+    const lecturerValue = document.getElementById('lecturer').value.trim();
+    if (lecturerValue) {
+        filterValues.lecturer = lecturerValue; // Dodanie do filtrów
+    }
+
+    // Pobranie wartości z pola grupy
+    const groupValue = document.getElementById('group').value.trim();
+    if (groupValue) {
+        filterValues.group = groupValue; // Dodanie filtra dla grupy
+    }
+
+    // Pobranie wartości z pola numeru albumu
+    const albumValue = document.getElementById('student-album').value.trim();
+    if (albumValue) {
+        filterValues.student_album = albumValue; // Dodanie filtra dla numeru albumu
+    }
+
+    // Pobranie wartości z pola przedmiotu
+    const subjectValue = document.getElementById('subject').value.trim();
+    if (subjectValue) {
+        filterValues.subject = subjectValue; // Dodanie filtra dla przedmiotu
+    }
+
+    fetch('http://127.0.0.1:5000/filters.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ room: roomNumber, filters: filterValues })
@@ -261,3 +281,4 @@ function displayRoomSchedule(data) {
 
     calendarTable.appendChild(table);
 }
+
