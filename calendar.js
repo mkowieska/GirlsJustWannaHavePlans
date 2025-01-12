@@ -239,6 +239,31 @@ function getDaysOfWeek(startOfWeek) {
 //     });
 // }
 function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
+
+    // Pobranie wartości z pola wykładowcy
+    const lecturerValue = document.getElementById('lecturer').value.trim();
+    if (lecturerValue) {
+        filterValues.lecturer = lecturerValue; // Dodanie filtra dla wykładowcy
+    }
+
+    // Pobranie wartości z pola grupy
+    const groupValue = document.getElementById('group').value.trim();
+    if (groupValue) {
+        filterValues.group = groupValue; // Dodanie filtra dla grupy
+    }
+
+    // Pobranie wartości z pola przedmiotu
+    const subjectValue = document.getElementById('subject').value.trim();
+    if (subjectValue) {
+        filterValues.subject = subjectValue; // Dodanie filtra dla przedmiotu
+    }
+
+    // Pobranie wartości z pola numeru albumu
+    const albumValue = document.getElementById('student-album').value.trim();
+    if (albumValue) {
+        filterValues.student_album = albumValue; // Dodanie filtra dla numeru albumu
+    }
+
     fetch('http://127.0.0.1:5000/sala.php', {
         method: 'POST',
         headers: {
