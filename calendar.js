@@ -199,50 +199,91 @@ function getDaysOfWeek(startOfWeek) {
 
 //obsługa filtrów
 
+//sala:
+//Funkcja do pobierania danych z bazy SQLite
+// function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
+//     // Wywołanie backendu (np. endpointu, który obsłuży zapytanie do SQLite)
+//     // fetch('/get-room-schedule', {
+//     fetch('http://127.0.0.1:5000/sala.php', {
+//     method: 'POST',
+//     headers: {
+//     'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({
+//     room: '1IiJM CN 0_27',  // Numer sali, który chcesz sprawdzić
+//     filters: {
+//         // Możesz tu dodać dodatkowe filtry, jeśli chcesz
+//         wydzial: 'WNoZiR'
+//     }
+//     })
+//     }  )
+//     .then(response => response.json())
+//     .then(data => {
+//     if (data.error) {
+//         console.error('Błąd:', data.error);
+//     } else {
+//         console.log('Dane harmonogramu:', data);
+//         data.forEach(lesson => {
+//             console.log(`Data: ${lesson.lesson_date}`);
+//             console.log(`Godzina rozpoczęcia: ${lesson.start_time}`);
+//             console.log(`Godzina zakończenia: ${lesson.end_time}`);
+//             console.log(`Przedmiot: ${lesson.subject_name}`);
+//             console.log(`Wykładowca: ${lesson.lecturer_name}`);
+//             console.log(`Grupa: ${lesson.group_name}`);
+//             console.log('----------------------------');
+//         });
+//     }
+//     })
+//     .catch(error => {
+//     console.error('Błąd:', error);
+//     });
+// }
 function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
-    // Pobranie wartości z pola wykładowcy
-    const lecturerValue = document.getElementById('lecturer').value.trim();
-    if (lecturerValue) {
-        filterValues.lecturer = lecturerValue; // Dodanie do filtrów
-    }
-
-    // Pobranie wartości z pola grupy
-    const groupValue = document.getElementById('group').value.trim();
-    if (groupValue) {
-        filterValues.group = groupValue; // Dodanie filtra dla grupy
-    }
-
-    // Pobranie wartości z pola numeru albumu
-    const albumValue = document.getElementById('student-album').value.trim();
-    if (albumValue) {
-        filterValues.student_album = albumValue; // Dodanie filtra dla numeru albumu
-    }
-
-    // Pobranie wartości z pola przedmiotu
-    const subjectValue = document.getElementById('subject').value.trim();
-    if (subjectValue) {
-        filterValues.subject = subjectValue; // Dodanie filtra dla przedmiotu
-    }
-
-    fetch('http://127.0.0.1:5000/filters.php', {
+    fetch('http://127.0.0.1:5000/sala.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ room: roomNumber, filters: filterValues })
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            room: roomNumber,  // Numer sali, który chcesz sprawdzić
+            filters: filterValues  // Przekazujemy wszystkie filtry
+        })
     })
     .then(response => {
+        // Sprawdzamy, czy odpowiedź jest OK
         if (!response.ok) {
-            throw new Error(`Błąd podczas pobierania danych: ${response.statusText}`);
+            throw new Error('Błąd odpowiedzi serwera: ' + response.statusText);
         }
-        return response.json();
+        return response.text();  // Odbieramy odpowiedź jako tekst
     })
     .then(data => {
-        displayRoomSchedule(data);
+        console.log('Odpowiedź serwera:', data);  // Logujemy odpowiedź przed próbą parsowania
+        try {
+            const jsonData = JSON.parse(data);  // Parsujemy odpowiedź ręcznie
+            if (jsonData.error) {
+                console.error('Błąd:', jsonData.error);
+            } else {
+                console.log('Dane harmonogramu:', jsonData);
+                jsonData.forEach(lesson => {
+                    console.log(`Data: ${lesson.lesson_date}`);
+                    console.log(`Godzina rozpoczęcia: ${lesson.start_time}`);
+                    console.log(`Godzina zakończenia: ${lesson.end_time}`);
+                    console.log(`Przedmiot: ${lesson.subject_name}`);
+                    console.log(`Wykładowca: ${lesson.lecturer_name}`);
+                    console.log(`Grupa: ${lesson.group_name}`);
+                    console.log('----------------------------');
+                });
+            }
+        } catch (error) {
+            console.error('Błąd parsowania JSON:', error);
+        }
     })
     .catch(error => {
-        console.error("Błąd: ", error);
-        alert("Wystąpił błąd podczas pobierania danych dla sali.");
+        console.error('Błąd:', error);
     });
 }
+
+
 
 // Funkcja do wyświetlania danych w tabeli
 function displayRoomSchedule(data) {
