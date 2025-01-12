@@ -200,10 +200,11 @@ function getDaysOfWeek(startOfWeek) {
 //obsługa filtrów
 
 //sala:
-// Funkcja do pobierania danych z bazy SQLite
+//Funkcja do pobierania danych z bazy SQLite
 function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
     // Wywołanie backendu (np. endpointu, który obsłuży zapytanie do SQLite)
-    fetch('/get-room-schedule', {
+    // fetch('/get-room-schedule', {
+    fetch('http://127.0.0.1:5000/get-room-schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ room: roomNumber, filters: filterValues })
@@ -260,5 +261,3 @@ function displayRoomSchedule(data) {
 
     calendarTable.appendChild(table);
 }
-
-
