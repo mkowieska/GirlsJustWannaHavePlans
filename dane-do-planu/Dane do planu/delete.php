@@ -1,5 +1,6 @@
 <?php
-$cutoff_date = '2024-10-01';  // Data przed którą lekcje mają być usunięt
+$current_year = date('Y');  // Pobiera bieżący rok
+$cutoff_date = "$current_year-10-01";  // Ustawia datę na 1 października bieżącego roku
 
 try {
     $db = new PDO('sqlite:database.db');

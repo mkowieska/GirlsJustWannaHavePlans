@@ -35,8 +35,8 @@ function fetchLecturerDataByLetter($letter) {
             $fullName = $item['item'];
             $nameParts = explode(' ', $fullName);
             if (count($nameParts) >= 2) {
-                $firstName = $nameParts[0];
-                $lastName = implode(' ', array_slice($nameParts, 1)); // obsługa nazwisk składających się z wielu części
+                $lastName = $nameParts[0];  // Teraz nazwisko jest pierwsze
+                $firstName = implode(' ', array_slice($nameParts, 1)); // reszta to imię
                 $lecturers[] = [$firstName, $lastName];
             }
         }
