@@ -31,19 +31,94 @@ document.getElementById('plus').addEventListener('click', () => {
 });
 
 // Obsługa przycisków filtrowania
+// document.getElementById('search').addEventListener('click', function() {
+//     const roomInput = document.getElementById('sala').value.trim();
+    
+//     // Zbieramy wszystkie filtry z formularza
+//     const filters = {
+//         wydzial: document.getElementById('wydzial').value,
+//         typ_studiow: document.getElementById('typ_studiow').value,
+//         semestr: document.getElementById('semestr').value,
+//         wykladowca: document.getElementById('wykladowca').value,
+//         forma_przedmiotu: document.getElementById('forma_przedmiotu').value,
+//         przedmiot: document.getElementById('przedmiot').value,
+//         sala: roomInput,  // Numer sali
+//         grupa: document.getElementById('grupa').value,
+//         numer_albumu: document.getElementById('numer_albumu').value // Numer albumu
+//     };
+
+//     console.log("Filtry:");
+//     Object.keys(filters).forEach(id => {
+//         console.log(id, ":", filters[id]);
+//     });
+
+//     // Wywołanie funkcji do pobrania danych z bazy
+//     fetchRoomScheduleFromDatabase(roomInput, filters);
+// });
+// Obsługa przycisków filtrowania
+// Obsługa przycisków filtrowania
 document.getElementById('search').addEventListener('click', function() {
-    const roomInput = document.getElementById('sala').value.trim();
-    const filters = ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu'];
-    console.log("Filtry:");
-    filters.forEach(id => {
-        const value = document.getElementById(id).value;
-        console.log(id, ":", value);
-    });
+    // Odczytanie wartości z formularza
+    const alnumInput = document.getElementById('numer_albumu').value.trim();  // Numer albumu
+    const lecturerInput = document.getElementById('wykladowca').value.trim();  // Wykładowca
+    const groupInput = document.getElementById('grupa').value.trim();  // Grupa
+
+    // Tworzenie obiektu filtrów
+    const filterValues = {
+        alnumInput,
+        lecturerInput,
+        groupInput,
+        wydzial: document.getElementById('wydzial').value,
+        typ_studiow: document.getElementById('typ_studiow').value,
+        semestr: document.getElementById('semestr').value,
+        forma_przedmiotu: document.getElementById('forma_przedmiotu').value,
+        przedmiot: document.getElementById('przedmiot').value,
+        sala: document.getElementById('sala').value
+    };
+
+    // Dodanie logu, aby sprawdzić, co zawiera filterValues przed wysłaniem
+    console.log("Filtry przed wysłaniem:", filterValues);
 
     // Wywołanie funkcji do pobrania danych z bazy
-    fetchRoomScheduleFromDatabase(roomInput);
+    fetchRoomScheduleFromDatabase(filterValues);
 });
 
+// Funkcja do wysyłania danych do serwera
+function fetchRoomScheduleFromDatabase(filterValues) {
+    fetch('http://127.0.0.1:5000/sala.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filters: filterValues })  // Wysyłamy filtry w obiekcie 'filters'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Błąd odpowiedzi serwera: ' + response.statusText);
+        }
+        return response.json();  // Zmieniamy na response.json(), żeby otrzymać odpowiedź jako JSON
+    })
+    .then(data => {
+        console.log('Odpowiedź serwera:', data);  
+        // Obsługuje dane harmonogramu
+        if (data.error) {
+            console.error('Błąd:', data.error);
+        } else {
+            data.forEach(lesson => {
+                console.log(`Data: ${lesson.lesson_date}`);
+                console.log(`Godzina rozpoczęcia: ${lesson.start_time}`);
+                console.log(`Godzina zakończenia: ${lesson.end_time}`);
+                console.log(`Przedmiot: ${lesson.subject_name}`);
+                console.log(`Wykładowca: ${lesson.lecturer_name}`);
+                console.log(`Grupa: ${lesson.group_name}`);
+                console.log('----------------------------');
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Błąd:', error);
+    });
+}
 
 document.getElementById('clear-filters').addEventListener('click', function() {
     ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu']
