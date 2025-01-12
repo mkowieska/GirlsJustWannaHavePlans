@@ -45,26 +45,6 @@ document.getElementById('search').addEventListener('click', function() {
 });
 
 
-// function checkRoomExistence(roomNumber) {
-//     fetch('/check-room-existence', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ room_number: roomNumber })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.exists) {
-//             console.log('ID sali:', data.room_id);
-//         } else {
-//             alert('Sala nie istnieje w bazie danych.');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Błąd:', error);
-//         alert('Wystąpił błąd podczas sprawdzania sali.');
-//     });
-// }
-
 document.getElementById('clear-filters').addEventListener('click', function() {
     ['wydzial', 'typ_studiow', 'semestr', 'wykladowca', 'forma_przedmiotu', 'przedmiot', 'sala', 'grupa', 'numer_albumu']
         .forEach(id => document.getElementById(id).value = '');
