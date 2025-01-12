@@ -1,1 +1,0 @@
-Lesson zeby pobieralo id z innych klas poprawic!
