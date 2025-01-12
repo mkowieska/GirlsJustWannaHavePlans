@@ -284,6 +284,7 @@ function fetchRoomScheduleFromDatabase(roomNumber, filterValues) {
 }
 
 
+
 // Funkcja do wyświetlania danych w tabeli
 function displayRoomSchedule(data) {
     const calendarTable = document.getElementById('calendar-table');
@@ -321,3 +322,4 @@ function displayRoomSchedule(data) {
 
     calendarTable.appendChild(table);
 }
+

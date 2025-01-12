@@ -1,0 +1,46 @@
+Przykład:
+1 tyg.
+ przedmiot, grupa,  sala,     student,         data,   poczatek,     koniec, typ,      wykladowca,  zastepujacy wykladowca, wydzial, semestr, typ studiow
+      (  1,     1,     1,           1, '2025-01-07', '12:15:00', '14:00:00', 'L',               1,  NULL                  ,       1,      'Z',           1  
+wt=pon 
+    ->SI 1,337 1,WI1-302 1,53882(ja) 1,          ...,        ...,        ..., ..., Andrii S. = AS 1, NULL
+    ->AI 2,337 1,WI1-303 2,1,...,...,...,'L',AlK 2,NULL,'WI','Z','S1'
+    ->SC 3,W3 2,WI1-215 3,1,...,...,...,'L',GŚ 3,NULL,'WI','Z','S1'
+sr 
+    ->ALGO 7,W22 6,WI2-226 9,1,...,...,...,'W',SK 8,NULL,'WI','Z','S1'
+    ->WF 8,Gr_WI 7,Wf 10,1,...,...,...,'W',AG 9,NULL,'WI','Z','S1'
+czw
+    ->MN 9,W22 6,WI1-215 3,1,...,...,...,'W',AB 10,NULL,'WI','Z','S1'
+    ->ZI 5,ISI 4,WI1-013 6,1,...,...,...,'W',PKo 5,NULL,'WI','Z','S1'
+    ->ANG 4,C1 3,W2-17,1,...,...,...,'Lek',EW 4,NULL,'WI','Z','S1'
+    ->IPZ 10,GRA_4 8,W2-318,1,...,...,...,'P',AL 11,NULL,'WI','Z','S1'
+pt
+    ->POI 6,W3 2,WI2-126 13,1,...,...,...,'W',JŚ 12,NULL,'WI','Z','S1'
+    ->SI 1,W3 2,WI2-226 9,1,...,...,...,'W',PKl 8,NULL,'WI','Z','S1'
+z dodatkiem, co 2tyg
+    ->GF,PO8,WI1-013 6,1,...,...,...,'W',AO-K 13,NULL,'WI','Z','S1'
+    ->GF,gr1 10,WI1-302 1,1,...,...,...,'L',AO-K 13,NULL,'WI','Z','S1'
+
+2tyg.
+pon 
+    ->SI 1,337 1,302 1,1,...,...,...,'L',AS 1,NULL,'WI','Z','S1'
+    ->AI 2,337 1,WI1-303 2,1,...,...,...,'L',AlK 2,NULL,'WI','Z','S1'
+    ->SC 3,W3 2,WI1-215 3,1,...,...,...,'W',GŚ 3,NULL,'WI','Z','S1'
+wt 
+    ->ANG 4,C1 3,W2-17 4,1,...,...,...,'Lek',EW 4,NULL,'WI','Z','S1'
+    ->ZI 5,ISI 4,WI1-309 5,1,...,...,...,'L',PKo 5,AS 1,'WI','Z','S1'
+    uznajmy dla testu, ze wykladowca od labow SI zastepuje wykladowce od labow ZI2
+    ->AI 2,ISI 4,WI1-013 6,1,...,...,...,'W',ArK 6,NULL,'WI','Z','S1'
+    ->SC 3,337 1,WI1-215 3,1,...,...,...,'L',GŚ 3,NULL,'WI','Z','S1'
+    ->POI 6,332 5,WI2-126 13,1,...,...,...,'L',IeF 7,NULL,'WI','Z','S1'
+sr 
+    ->ALGO 7,W22 6,WI2-226 9,1,...,...,...,'W',Pkl 8,NULL,'WI','Z','S1'
+    ->WF 8,Gr_WI 7,Wf 10,1,...,...,...,'A',AG 9,NULL,'WI','Z','S1'
+czw
+    ->MN 9,W22 6,WI1-215 3,1,...,...,...,'W',AB 10,NULL,'WI','Z','S1'
+    ->ZI 5,ISI 4,WI1-013 6,1,...,...,...,'W',PKo 5,NULL,'WI','Z','S1'
+    ->ANG 4,C1 3,W2-17 4,1,...,...,...,'Lek',EW 4,NULL,'WI','Z','S1'
+    ->IPZ 10,GRA_4 8,W2-318 12,1,...,...,...,'P',AL 11,NULL,'WI','Z','S1'
+pt
+    ->POI 6,W3 2,WI2-126 13,1,...,...,...,'W',JŚ 12,NULL,'WI','Z','S1'
+    ->SI 1,W3 2,WI2-226 9,1,...,...,...,'W',PKl 8,NULL,'WI','Z','S1'
