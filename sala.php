@@ -32,9 +32,9 @@ function getRoomSchedule($roomNumber, $filters) {
                 lesson_date,
                 start_time,
                 end_time,
-                Subject.name AS subject_name,
-                Lecturer.first_name || ' ' || Lecturer.last_name AS lecturer_name,
-                `Group`.group_name
+                COALESCE(Subject.name, 'Brak przedmiotu') AS subject_name,
+                COALESCE(Lecturer.first_name || ' ' || Lecturer.last_name, 'Brak wykładowcy') AS lecturer_name,
+                COALESCE(`Group`.group_name, 'Brak grupy') AS group_name
             FROM Lesson
             JOIN Subject ON Lesson.subject_id = Subject.id
             JOIN Lecturer ON Lesson.responsible_lecturer_id = Lecturer.id
@@ -46,11 +46,6 @@ function getRoomSchedule($roomNumber, $filters) {
         // Budowanie dynamicznych filtrów
         $conditions = [];
         $params = [':roomName' => $roomNumber];
-
-        if (!empty($filters['wydzial'])) {
-            $conditions[] = "Subject.department = :wydzial";
-            $params[':wydzial'] = $filters['wydzial'];
-        }
 
         if (!empty($filters['typ_studiow'])) {
             $conditions[] = "Subject.study_type = :typ_studiow";
@@ -121,3 +116,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(["error" => "Invalid request method."]);
 }
+?>
