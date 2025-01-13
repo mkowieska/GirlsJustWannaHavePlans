@@ -37,7 +37,7 @@ function fetch_room_data($room_number) {
 
 function insert_into_database($room_data) {
     try {
-        $db = new PDO('sqlite:database.db');
+        $db = new PDO('sqlite:database1.db');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $create_table_query = "
@@ -57,7 +57,7 @@ function insert_into_database($room_data) {
                 $added_count++;
             }
         }
-        echo "Inserted " . count($room_data) . " rooms into the database.\n";
+        #echo "Inserted " . count($room_data) . " rooms into the database.\n";
         return $added_count;
     } catch (PDOException $e) {
         echo "[ERROR] Database error: " . $e->getMessage() . "\n";

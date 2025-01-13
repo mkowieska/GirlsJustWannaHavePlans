@@ -47,7 +47,7 @@ function fetchLecturerDataByLetter($letter) {
 
 function insertIntoDatabase($lecturerData) {
     try {
-        $pdo = new PDO('sqlite:database.db');
+        $pdo = new PDO('sqlite:database1.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $insertQuery = "INSERT OR IGNORE INTO Lecturer (first_name, last_name) VALUES (:first_name, :last_name)";
@@ -60,7 +60,7 @@ function insertIntoDatabase($lecturerData) {
             ]);
         }
 
-        echo "Inserted " . count($lecturerData) . " lecturers into the database.\n"; #ignoring duplicates
+        #echo "Inserted " . count($lecturerData) . " lecturers into the database.\n"; #ignoring duplicates
     } catch (PDOException $e) {
         echo "[ERROR] Database error: " . $e->getMessage() . "\n";
     }

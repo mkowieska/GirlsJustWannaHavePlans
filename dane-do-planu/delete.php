@@ -1,6 +1,6 @@
 <?php
-$current_year = date('Y');  // Pobiera bieżący rok
-$cutoff_date = "$current_year-10-01";  // Ustawia datę na 1 października bieżącego roku
+$current_year = date('Y'); 
+$cutoff_date = "$current_year-10-01";
 
 try {
     $db = new PDO('sqlite:database.db');

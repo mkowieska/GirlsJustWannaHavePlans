@@ -42,7 +42,7 @@ function fetchGroupData($groupNumber) {
 
 function insertIntoDatabase($groupData) { 
     try {
-        $pdo = new PDO('sqlite:database.db');
+        $pdo = new PDO('sqlite:database1.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $insertQuery = "INSERT OR IGNORE INTO `Group` (group_name) VALUES (:group_name)";
@@ -52,7 +52,7 @@ function insertIntoDatabase($groupData) {
             $stmt->execute(['group_name' => $group[0]]);
         }
 
-        echo "Inserted " . count($groupData) . " groups into the database.\n";
+        #echo "Inserted " . count($groupData) . " groups into the database.\n";
     } catch (PDOException $e) {
         echo "[ERROR] Database error: " . $e->getMessage() . "\n";
     }

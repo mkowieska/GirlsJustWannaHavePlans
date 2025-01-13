@@ -66,7 +66,7 @@ function ensureUniqueIndexOnSubject() {
         $query = "CREATE UNIQUE INDEX IF NOT EXISTS idx_subject_name ON Subject(name)";
         $pdo->exec($query);
 
-        echo "Unique index ensured on 'name' column in 'Subject' table.\n";
+        #echo "Unique index ensured on 'name' column in 'Subject' table.\n";
     } catch (PDOException $e) {
         echo "Error adding unique index: " . $e->getMessage() . "\n";
     }
@@ -74,7 +74,7 @@ function ensureUniqueIndexOnSubject() {
 
 function insertSubjectsIntoDatabase($subjectData) {
     try {
-        $db = new PDO('sqlite:database.db');
+        $db = new PDO('sqlite:database1.db');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $query = "INSERT INTO Subject (name) VALUES (:name)";
