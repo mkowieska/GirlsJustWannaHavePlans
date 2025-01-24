@@ -43,30 +43,26 @@ function fetchSubjectDataByQuery($query) {
     foreach ($data as $item) {
         if (is_array($item) && isset($item['item'])) {
             $subjectName = $item['item'];
-            if (stripos($subjectName, $query) === 0 && !isset($uniqueSubjects[$subjectName])) { // Dodano sprawdzanie pierwszej litery
-            // unikniecie sytuacji, gdzie w konsoli wyswietla sie "Unique index ensured on 'name' column in 'Subject' table. 
-            // Starting to fetch data for all subjects A-Z... Fetching data for subjects with query 'A'...
-            // Extracted 10227 subjects for query 'A'., a pobiera dane, ktore zaczynaja sie na inna litere niz A
-            //if (!isset($uniqueSubjects[$subjectName])) {
+            $subjectName = preg_replace('/\s*\(.*$/', '', $subjectName); // Usuwanie części przed pierwszym nawiasem
+
+            // Sprawdzenie, czy nazwa nie kończy się spacją
+            if (substr($subjectName, -1) !== ' ' && stripos($subjectName, $query) === 0 && !isset($uniqueSubjects[$subjectName])) {
                 $uniqueSubjects[$subjectName] = true;
                 $subjects[] = $subjectName;
             }
         }
     }
 
-    echo "Extracted " . count($subjects) . " subjects for query '$query'.\n";
     return $subjects;
 }
 
 function ensureUniqueIndexOnSubject() {
     try {
-        $pdo = new PDO('sqlite:database.db');
+        $pdo = new PDO('sqlite:database1.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $query = "CREATE UNIQUE INDEX IF NOT EXISTS idx_subject_name ON Subject(name)";
         $pdo->exec($query);
-
-        #echo "Unique index ensured on 'name' column in 'Subject' table.\n";
     } catch (PDOException $e) {
         echo "Error adding unique index: " . $e->getMessage() . "\n";
     }
@@ -83,8 +79,6 @@ function insertSubjectsIntoDatabase($subjectData) {
         foreach ($subjectData as $subjectName) {
             $stmt->execute([':name' => $subjectName]);
         }
-
-        echo "Inserted " . count($subjectData) . " subjects into the database.\n";
     } catch (PDOException $e) {
         echo "Database error: " . $e->getMessage() . "\n";
     }
@@ -93,14 +87,15 @@ function insertSubjectsIntoDatabase($subjectData) {
 // Main Script
 ensureUniqueIndexOnSubject();
 
-#$alphabet = range('A', 'Z');
-#$alphabet_number = array_merge(range('A', 'Z'), range('0', '9'));
-$alphabet_etc = array_merge(range('A', 'Z'), range('0', '9'), [' ','(', '[', '{', '!'], ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']); 
-#znaki specjalne dla sali " (WBiIS, budownictwo, SN, SPS)", zaczynajacej sie tak naprawde od spacji oraz cyrylica, poniewaz w poprzednim kodzie, ktory dublkowal wszytskie informacje zawarte w Przedmiot byly pliki z cyrylica
-echo "Starting to fetch data for all subjects A-Z...\n";
+$alphabet_etc = array_merge(
+    range('A', 'Z'), 
+    range('0', '9'), 
+    [' ', '(', '[', '{', '!'], 
+    ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']
+);
 
 foreach ($alphabet_etc as $letter_number) {
-    $query = $letter_number;
+    $query = rtrim($letter_number); // Usunięcie końcowej spacji
     $subjectData = fetchSubjectDataByQuery($query);
     if (!empty($subjectData)) {
         insertSubjectsIntoDatabase($subjectData);

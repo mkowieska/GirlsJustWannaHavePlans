@@ -1,4 +1,11 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Flush the output buffer to ensure immediate display
+ob_implicit_flush(true); // Automatically flush after each echo
+
 function fetch_student_groups($album_number) {
     $url = "https://plan.zut.edu.pl/schedule_student.php?number=" . $album_number;
     $headers = [
@@ -17,12 +24,24 @@ function fetch_student_groups($album_number) {
     curl_close($ch);
 
     if ($http_code !== 200 || !$response) {
+        echo "Failed to fetch data from the API. HTTP Code: $http_code\n";
         return null;
     }
 
+    // Debugging: Display the raw API response
+    echo "Raw API Response: " . $response . "\n";
+
+    // Save the response to a file for future analysis
+    file_put_contents('api_response.json', $response);
+
     $data = json_decode($response, true);
 
+    // Debugging: Display the decoded data structure
+    echo "Decoded Data: ";
+    print_r($data);
+
     if (json_last_error() !== JSON_ERROR_NONE) {
+        echo "Error decoding JSON: " . json_last_error_msg() . "\n";
         return null;
     }
 
@@ -31,87 +50,74 @@ function fetch_student_groups($album_number) {
 
 function validate_student_groups($data) {
     $valid_groups = [];
-    $start_date = strtotime('2025-01-01'); // Początek 2025
-    $end_date = strtotime('2025-12-31');  // Koniec 2025
+    $start_date = strtotime('2025-01-01'); // Start of 2025
+    $end_date = strtotime('2025-12-31');  // End of 2025
+
+    echo "Validating groups...\n"; // Start validation process
 
     foreach ($data as $item) {
         if (is_array($item) && isset($item["group_name"], $item["start"])) {
-            // Przekształcenie daty startowej na timestamp
+            // Debugging: Display group name and start date
+            echo "Processing group: " . $item["group_name"] . " with start date: " . $item["start"] . "\n";
+
             $class_timestamp = strtotime($item["start"]);
 
-            // Sprawdzenie, czy data zajęć mieści się w 2025 roku
+            // Check if the class date is within 2025
             if ($class_timestamp >= $start_date && $class_timestamp <= $end_date) {
                 $valid_groups[] = $item["group_name"];
             }
         }
     }
 
+    // Debugging: Display the valid groups
+    echo "Valid Groups after validation: ";
+    print_r($valid_groups);
+
     return !empty($valid_groups) ? $valid_groups : null;
 }
 
 function get_group_id_by_name($group_name, $pdo) {
-    // Sprawdzenie id grupy w bazie danych
+    // Check for group ID in the database
+    echo "Checking for group ID for: $group_name\n"; // Debugging group name
     $query = $pdo->prepare("SELECT id FROM `Group` WHERE group_name = :group_name");
     $query->execute([':group_name' => $group_name]);
-    $result = $query->fetch(PDO::FETCH_ASSOC);
 
+    // Debugging: Check what the query returned
+    $result = $query->fetch(PDO::FETCH_ASSOC);
     if ($result) {
+        echo "Group ID found for $group_name: " . $result['id'] . "\n";
         return $result['id'];
+    } else {
+        echo "No group found for $group_name\n";
     }
     return null;
 }
 
-function update_student_group($album_number, $group_id, $pdo) {
-    try {
-        // Zaktualizowanie grupy studenta
-        $query = $pdo->prepare('UPDATE Student SET group_id = :group_id WHERE album_number = :album_number');
-        $query->execute([':group_id' => $group_id, ':album_number' => $album_number]);
-        echo "Student $album_number updated with group_id $group_id\n";
-    } catch (PDOException $e) {
-        echo "[ERROR] Database error: " . $e->getMessage() . "\n";
-    }
-}
-
-function insert_student($album_number, $pdo) {
-    try {
-        // Sprawdzenie, czy student już istnieje w bazie
-        $query = $pdo->prepare("SELECT id FROM `Student` WHERE album_number = :album_number");
-        $query->execute([':album_number' => $album_number]);
-        $result = $query->fetch(PDO::FETCH_ASSOC);
-
-        if (!$result) {
-            // Wstawienie studenta
-            $insert_query = $pdo->prepare("INSERT INTO `Student` (album_number) VALUES (:album_number)");
-            $insert_query->execute([':album_number' => $album_number]);
-            echo "Inserted student with album number $album_number\n";
-        }
-    } catch (PDOException $e) {
-        echo "[ERROR] Database error: " . $e->getMessage() . "\n";
-    }
+function display_student_group($album_number, $group_name) {
+    echo "Student with album number $album_number is in group: $group_name\n";
 }
 
 function process_students() {
     try {
-        // Połączenie z bazą danych
+        // Connect to the database (for group checking only)
         $pdo = new PDO('sqlite:database1.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $valid_students = [];
-        for ($album_number = 49000; $album_number <= 60000; $album_number++) {
+        for ($album_number = 53708; $album_number <= 52710; $album_number++) {
+            echo "Processing student with album number: $album_number\n";
+
             $data = fetch_student_groups($album_number);
             if ($data) {
                 $groups = validate_student_groups($data);
                 if ($groups) {
-                    // Zakładając, że przypisujemy pierwszą znalezioną grupę
+                    // Assuming the first valid group is assigned
                     $group_name = $groups[0];
-                    $group_id = get_group_id_by_name($group_name, $pdo);
 
-                    if ($group_id) {
-                        insert_student($album_number, $pdo);
-                        update_student_group($album_number, $group_id, $pdo);
-                    } else {
-                        echo "Group $group_name not found in the database.\n";
-                    }
+                    // Instead of updating the database, we will display the student and group info
+                    display_student_group($album_number, $group_name);
+                } else {
+                    echo "No valid groups found for student $album_number.\n";
                 }
             }
         }
@@ -119,10 +125,10 @@ function process_students() {
         echo "Process completed - Student.\n";
 
     } catch (PDOException $e) {
-        echo "[ERROR] Database error: " . $e->getMessage() . "\n";
+        echo "[ERROR] Database error during process: " . $e->getMessage() . "\n";
     }
 }
 
-// Uruchomienie procesu
+// Run the process
 process_students();
 ?>
