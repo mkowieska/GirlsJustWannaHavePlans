@@ -46,10 +46,22 @@ function getRoomId($roomName, $pdo) {
 }
 
 function getLecturerId($firstName, $lastName, $pdo) {
+    // Sprawdzamy, czy nauczyciel już istnieje w bazie
     $stmt = $pdo->prepare("SELECT id FROM Lecturer WHERE first_name = :first_name AND last_name = :last_name");
     $stmt->execute([':first_name' => trim($firstName), ':last_name' => trim($lastName)]);
     $row = $stmt->fetch();
-    return $row ? $row['id'] : null;
+
+    if ($row) {
+        // Jeśli nauczyciel istnieje, zwracamy jego ID
+        return $row['id'];
+    } else {
+        // Jeśli nauczyciel nie istnieje, dodajemy go do bazy
+        $stmt = $pdo->prepare("INSERT INTO Lecturer (first_name, last_name) VALUES (:first_name, :last_name)");
+        $stmt->execute([':first_name' => trim($firstName), ':last_name' => trim($lastName)]);
+        
+        // Zwracamy ID nowo dodanego nauczyciela
+        return $pdo->lastInsertId();
+    }
 }
 
 // Funkcje do obliczeń
@@ -115,11 +127,17 @@ foreach ($schedule as $lesson) {
     $studyType = getStudyType($startTime->format('Y-m-d'));
     $department = getDepartment($roomName);
 
+    // Pobranie imienia i nazwiska wykładowcy
+    $stmt = $pdo->prepare("SELECT first_name, last_name FROM Lecturer WHERE id = :id");
+    $stmt->execute([':id' => $lecturerId]);
+    $lecturer = $stmt->fetch();
+
     // Debug: Wyświetlenie przetwarzanych danych
     echo "Przedmiot: $subjectName | ID: $subjectId" . PHP_EOL;
     echo "Grupa: $groupName | ID: $groupId" . PHP_EOL;
     echo "Sala: $roomName | ID: $roomId" . PHP_EOL;
     echo "Wydział: $department, Semestr: $semester, Typ studiów: $studyType" . PHP_EOL;
+    echo "Wykładowca: " . $lecturer['first_name'] . " " . $lecturer['last_name'] . " | ID: $lecturerId" . PHP_EOL;
 
     // Przygotowanie zapytania do zapisu danych do tabeli Lesson (bez student_id)
     $stmt = $pdo->prepare("
