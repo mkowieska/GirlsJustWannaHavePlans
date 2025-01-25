@@ -83,15 +83,13 @@ function getDepartment($roomName) {
 }
 
 // Przykładowe dane wejściowe
-$teacher = "Karczmarczyk Artur";
+$teacher = "Karczmarczyk Aleksandra";
 $start = "2024-09-30T00:00:00+02:00";
 $end = "2024-10-07T00:00:00+02:00";
 
 // Pobranie planu zajęć nauczyciela z API
 $schedule = fetchScheduleFromAPI($teacher, $start, $end);
-
-// Debug: Wyświetlenie danych z API
-echo "Dane z API: " . json_encode($schedule, JSON_PRETTY_PRINT) . PHP_EOL;
+//echo "Dane z API: " . json_encode($schedule, JSON_PRETTY_PRINT) . PHP_EOL;
 
 // Przetwarzanie odpowiedzi z API i zapisywanie danych do tabeli Lesson
 foreach ($schedule as $lesson) {
@@ -132,12 +130,12 @@ foreach ($schedule as $lesson) {
     $stmt->execute([':id' => $lecturerId]);
     $lecturer = $stmt->fetch();
 
-    // Debug: Wyświetlenie przetwarzanych danych
-    echo "Przedmiot: $subjectName | ID: $subjectId" . PHP_EOL;
-    echo "Grupa: $groupName | ID: $groupId" . PHP_EOL;
-    echo "Sala: $roomName | ID: $roomId" . PHP_EOL;
-    echo "Wydział: $department, Semestr: $semester, Typ studiów: $studyType" . PHP_EOL;
-    echo "Wykładowca: " . $lecturer['first_name'] . " " . $lecturer['last_name'] . " | ID: $lecturerId" . PHP_EOL;
+    // Debug
+    //echo "Przedmiot: $subjectName | ID: $subjectId" . PHP_EOL;
+    //echo "Grupa: $groupName | ID: $groupId" . PHP_EOL;
+    //echo "Sala: $roomName | ID: $roomId" . PHP_EOL;
+    //echo "Wydział: $department, Semestr: $semester, Typ studiów: $studyType" . PHP_EOL;
+    //echo "Wykładowca: " . $lecturer['first_name'] . " " . $lecturer['last_name'] . " | ID: $lecturerId" . PHP_EOL;
 
     // Przygotowanie zapytania do zapisu danych do tabeli Lesson (bez student_id)
     $stmt = $pdo->prepare("
@@ -168,7 +166,7 @@ foreach ($schedule as $lesson) {
     ]);
 
     echo "Dane zostały zapisane do bazy danych!" . PHP_EOL;
-    echo "----------------------------------------" . PHP_EOL;
+    //echo "----------------------------------------" . PHP_EOL;
 }
 
 ?>
