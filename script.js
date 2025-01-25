@@ -143,3 +143,48 @@ document.getElementById('semester').addEventListener('click', () => changeView('
 // Inicjalizacja
 updateTodayButton();
 renderCalendar();
+
+//autouzupełnianie dla wykładowcy
+const lecturerInput = document.getElementById('lecturer-filter');
+const suggestionsContainer = document.getElementById('lecturer-suggestions');
+
+lecturerInput.addEventListener('input', () => {
+    const query = lecturerInput.value.trim();
+
+    if (query.length < 2) {
+        suggestionsContainer.innerHTML = '';
+        return;
+    }
+
+    fetch('http://localhost/autocomplete.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ autocompleteQuery: query })
+    })
+        .then(response => response.json())
+        .then(data => {
+            displaySuggestions(data);
+        })
+        .catch(error => {
+            console.error('Błąd podczas autouzupełniania:', error);
+        });
+});
+
+function displaySuggestions(lecturers) {
+    suggestionsContainer.innerHTML = '';
+
+    if (lecturers.length === 0) {
+        suggestionsContainer.innerHTML = '<div>Brak wyników</div>';
+        return;
+    }
+
+    lecturers.forEach(lecturer => {
+        const suggestion = document.createElement('div');
+        suggestion.textContent = lecturer.lecturer_name;
+        suggestion.addEventListener('click', () => {
+            lecturerInput.value = lecturer.lecturer_name;
+            suggestionsContainer.innerHTML = ''; 
+        });
+        suggestionsContainer.appendChild(suggestion);
+    });
+}

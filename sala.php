@@ -5,13 +5,11 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 // Funkcja do pobierania harmonogramu z filtrami
-// Funkcja do pobierania harmonogramu z filtrami
 function getRoomSchedule($filters) {
     try {
         $db = new PDO('sqlite:database.db');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Define the basic query structure
         $query = "
         SELECT
             lesson_date,
@@ -49,13 +47,11 @@ function getRoomSchedule($filters) {
             $params[':grupa'] = $filters['groupInput'];
         }
 
-        // Dodajemy filtr na przedmiot
         if (!empty($filters['przedmiot'])) {
             $conditions[] = "Subject.name LIKE :przedmiot";
             $params[':przedmiot'] = '%' . $filters['przedmiot'] . '%';
         }
 
-        // Dodajemy kolejne filtry, jeśli istnieją
         if (!empty($filters['wydzial'])) {
             $conditions[] = "Room.department = :wydzial";
             $params[':wydzial'] = $filters['wydzial'];
